@@ -51,15 +51,11 @@ THRESHOLD = 0.05
 
 def compress(f: Net):
 
-    # mask values
-    for k, v in f.state_dict().items():
-        # l.weight.data *= (l.weight.data < THRESHOLD).float()
-        v *= (v < THRESHOLD).float()
-    return f
+    # mask weights and biases
+    for l in f.parameters():
+        mask = (torch.abs(l.data) > THRESHOLD).float()
+        l.data.mul_(mask)
 
-    # f.fc1.weight *= (f.fc1.weight < THRESHOLD).float()
-    # f.fc2.weight *= (f.fc2.weight < THRESHOLD).float()
-    # f.out.weight *= (f.out.weight < THRESHOLD).float()
 
 
 f = compress(net)
