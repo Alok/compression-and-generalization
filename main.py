@@ -57,5 +57,14 @@ def compress(f: Net):
         l.data.mul_(mask)
 
 
+# TODO compress after training
+compress(net)
 
-f = compress(net)
+# TODO loop: training, compression
+
+# TODO drop rows before and after layer you want to prune
+
+# TODO add training on dataset and make network take corresponding input/output dimensions
+
+for l in net.children():
+    print(l.weight)
