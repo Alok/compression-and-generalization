@@ -41,7 +41,11 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    '--momentum', type=float, default=0.9, metavar='M', help='SGD momentum (default: 0.9),'
+    '--momentum',
+    type=float,
+    default=0.9,
+    metavar='M',
+    help='SGD momentum (default: 0.9)',
 )
 
 parser.add_argument(
