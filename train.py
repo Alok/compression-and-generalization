@@ -20,7 +20,7 @@ def train(f, epochs=3, real=True):
     optimizer = optim.SGD(f.parameters(), lr=args.lr, momentum=args.momentum)
 
     for epoch in range(epochs):
-        for i, (x, y) in enumerate(loader):
+        for x, y in loader:
 
             if args.cuda:
                 x, y = x.cuda(), y.cuda()
@@ -33,5 +33,5 @@ def train(f, epochs=3, real=True):
             loss.backward()
             optimizer.step()
 
-            losses.append(float(loss.data[0]))  # extract number for singleton tensor
+        losses.append(float(loss.data[0]))  # extract number for singleton tensor
     return losses
