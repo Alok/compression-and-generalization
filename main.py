@@ -23,15 +23,17 @@ plt.ioff()
 
 kwargs = {'num_workers': 1, 'pin_memory': True} if args.cuda else {}
 
-for i in range(ITERS):
+for iter in range(ITERS):
 
-    # train and plot performance
+    # Train
     real_losses = train(real_model, real=True)
     fake_losses = train(fake_model, real=False)
+
+    # Plot performance
     plt = plot(real_losses, fake_losses)
-    plt.savefig(f'{i}.png')
+    plt.savefig(f'./figs/{iter}.png')
     plt.gcf().clear()
 
-    # compress and repeat
+    # Compress and repeat
     compress(real_model)
     compress(fake_model)
