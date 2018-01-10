@@ -9,10 +9,10 @@ def plot(real, fake):
     xs = np.arange(len(real))
 
     # green for real, red for fake
-    # plt.scatter(xs, real, color='g')
-    # plt.scatter(xs, fake, color='r')
-    plt.plot(xs,real,color='g')
-    plt.plot(xs,fake,color='r')
+    plt.scatter(xs, real, color='g')
+    plt.scatter(xs, fake, color='r')
+    # plt.plot(xs,real,color='g')
+    # plt.plot(xs,fake,color='r')
 
     return plt
 
