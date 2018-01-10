@@ -11,7 +11,7 @@ from plot import plot
 from train import train
 
 ITERS = 5
-REAL_EPOCHS = 3
+REAL_EPOCHS = 10
 FAKE_EPOCHS = 1 * REAL_EPOCHS
 
 # Set seed
@@ -35,6 +35,6 @@ for iter in range(ITERS):
     plt.savefig(f'figs/{iter}.png')
     plt.gcf().clear()
 
-    # Compress and repeat
-    compress(real_model)
-    compress(fake_model)
+    # # Compress and repeat
+    # compress(real_model)
+    # compress(fake_model)
