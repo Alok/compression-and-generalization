@@ -11,7 +11,9 @@ from torch.autograd import Variable as V
 from cli_options import args
 
 
-def train(f, epochs=5, real=True) -> None:
+def train(f, *, epochs=3, real=True) -> List[float]:
+
+    losses = []
 
     f.train()  # put the model in training mode
     criterion = nn.CrossEntropyLoss()
@@ -32,3 +34,6 @@ def train(f, epochs=5, real=True) -> None:
             loss = criterion(out, y)
             loss.backward()
             optimizer.step()
+
+            losses.append(loss)
+    return losses
