@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import matplotlib.pyplot as plt
+import numpy as np
 import torch
 
 from cli_options import args
@@ -33,7 +34,11 @@ for iter in range(1, ITERS + 1):
     fake_losses = train(fake_model, real=False, epochs=FAKE_EPOCHS)
 
     # Plot performance
-    plt = plot(real=real_losses[::STEP_SIZE], fake=fake_losses[::STEP_SIZE])
+    plt = plot(
+        np.arange(len(real_losses)),
+        real=real_losses,
+        fake=fake_losses,
+    )
     plt.title('Iteration: %s' % iter)
     plt.ylabel('Loss')
     plt.xlabel('Minibatch')
