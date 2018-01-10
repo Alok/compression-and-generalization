@@ -1,32 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-
-import logging
-import os
-import random
-import re
-import shutil
-import subprocess
-import sys
-from logging import debug, info, log
-from pathlib import Path
-
-import better_exceptions
-import matplotlib.pyplot as plt
 import numpy as np
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import torch.nn.init as init
-import torch.optim as optim
-import torchvision.transforms as transforms
 from keras.datasets import mnist
 from keras.utils import to_categorical
-from pudb import set_trace
-from torch.utils.data import DataLoader, Dataset, TensorDataset
-from torchvision import datasets
+from torch.utils.data import DataLoader, TensorDataset
 
 from cli_options import args
 
