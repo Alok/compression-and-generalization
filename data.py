@@ -20,8 +20,9 @@ x_test = x_test.reshape(-1, 784).astype(np.float32)
 x_train /= 255
 x_test /= 255
 
-y_train = to_categorical(y_train, num_classes=10)
-y_test = to_categorical(y_test, num_classes=10)
+# PyTorch does not want one hot encoding
+y_train = y_train.astype(np.int64)
+y_test = y_test.astype(np.int64)
 
 
 def create_loader(data: np.ndarray, labels: np.ndarray, shuffle: bool = True) -> DataLoader:
