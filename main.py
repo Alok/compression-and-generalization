@@ -11,10 +11,10 @@ from model import fake_model, real_model
 from plot import plot
 from train import train
 
+ITERS = 5
 REAL_EPOCHS = 3
 FAKE_EPOCHS = 1 * REAL_EPOCHS
 
-ITERS = 5
 # Set seed
 torch.manual_seed(args.seed)
 if args.cuda:

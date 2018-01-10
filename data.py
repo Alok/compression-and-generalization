@@ -1,51 +1,50 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import numpy as np
+from random import randint
+
 import torch
-from keras.datasets import mnist
-from keras.utils import to_categorical
-from torch.utils.data import DataLoader, TensorDataset
+from torch.utils.data import DataLoader
+from torchvision import transforms
+from torchvision.datasets import MNIST
 
 from cli_options import args
 
-# get data into nice,normalized numpy arrays
+NUM_CLASSES = 10
 
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
+transform = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize((0, 0, 0), (1, 1, 1)),  # want (0,1) values
+])
 
-x_train = x_train.reshape(-1, 784).astype(np.float32)
-x_test = x_test.reshape(-1, 784).astype(np.float32)
+real_dataset = MNIST(
+    root='./data',
+    train=True,
+    download=True,
+    transform=transform,
+)
 
-# normalize to range (0,1)
-x_train /= 255
-x_test /= 255
+fake_dataset = MNIST(
+    root='./data',
+    train=True,
+    download=True,
+    transform=transform,
+)
 
-# PyTorch does not want one hot encoding
-y_train = y_train.astype(np.int64)
-y_test = y_test.astype(np.int64)
+fake_dataset.train_labels.random_(0, to=NUM_CLASSES)  # randomize labels
 
+# TODO try on CIFAR and ImageNet
+real_train_loader = DataLoader(
+    real_dataset,
+    batch_size=args.batch_size,
+    shuffle=True,
+)
 
-def create_loader(data: np.ndarray, labels: np.ndarray, shuffle: bool = True) -> DataLoader:
-    return DataLoader(
-        TensorDataset(torch.from_numpy(data), torch.from_numpy(labels)),
-        batch_size=args.batch_size,
-        shuffle=shuffle,
-        pin_memory=args.cuda,
-    )
+fake_train_loader = DataLoader(
+    fake_dataset,
+    batch_size=args.batch_size,
+    shuffle=True,
+)
 
-
-##############################################################################
-# Returns: data loaders
-
-real_train_loader = create_loader(x_train, y_train)
-# random labels
-fake_train_loader = create_loader(x_train, np.random.permutation(y_train))
-# random (0,1) noise for data
-# fake_train_loader = create_loader( np.random.random_sample(x_train.shape).astype(np.float32), y_train)
-
-
-real_test_loader = create_loader(x_test, y_test)
-fake_test_loader = create_loader(np.random.random_sample(x_test.shape).astype(np.float32), y_test)
-
-# TODO rm the use of keras and just directly modify the pytorch mnist dataloader
-# TODO try on cifar and imagenet
+if __name__ == '__main__':
+    pass
