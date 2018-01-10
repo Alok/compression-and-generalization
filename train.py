@@ -35,5 +35,5 @@ def train(f, *, epochs=3, real=True) -> List[float]:
             loss.backward()
             optimizer.step()
 
-            losses.append(loss)
+            losses.append(float(loss.data[0]))  # extract number for singleton tensor
     return losses
