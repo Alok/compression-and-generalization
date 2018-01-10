@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+
 import logging
 import os
 import random
@@ -11,6 +13,7 @@ import sys
 from logging import debug, info, log
 from pathlib import Path
 
+import better_exceptions
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
@@ -18,53 +21,117 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.nn.init as init
 import torch.optim as optim
-import torchvision.datasets as dset
 import torchvision.transforms as transforms
+from keras.datasets import mnist
+from keras.utils import to_categorical
 from pudb import set_trace
-from torch.autograd import Variable as V
+from torch.autograd import Variable
 from torch.nn import Parameter as P
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Dataset
+from torchvision import datasets
+
+from cli_options import args
+
+CYCLES = 5
+
+args.cuda = not args.no_cuda and torch.cuda.is_available()
+
+# Set seed
+torch.manual_seed(args.seed)
+if args.cuda:
+    torch.cuda.manual_seed(args.seed)
+
+kwargs = {'num_workers': 1, 'pin_memory': True} if args.cuda else {}
+train_loader = torch.utils.data.DataLoader(
+    datasets.MNIST(
+        'data',
+        train=True,
+        download=True,
+        transform=transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize((0.1307, ), (0.3081, ))
+        ])
+    ),
+    batch_size=args.batch_size,
+    shuffle=True,
+    **kwargs
+)
+test_loader = torch.utils.data.DataLoader(
+    datasets.MNIST(
+        'data',
+        train=False,
+        transform=transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize((0.1307, ), (0.3081, ))
+        ])
+    ),
+    batch_size=args.test_batch_size,
+    shuffle=True,
+    **kwargs
+)
+
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+x_train = x_train.reshape(-1, 784).astype(np.float32)
+x_test = x_test.reshape(-1, 784).astype(np.float32)
+
+x_train /= 255
+x_test /= 255
+
+y_train = to_categorical(y_train, num_classes=10)
+y_test = to_categorical(y_test, num_classes=10)
+
+x_train = torch.from_numpy(x_train)
+y_train = torch.from_numpy(y_train)
+x_test = torch.from_numpy(x_test)
+x_test = torch.from_numpy(y_test)
 
 
-class Net(nn.Module):
-    def __init__(self):
-        super().__init__()
-        # TODO layers
-        self.fc1 = nn.Linear(28**2, 512)
-        self.fc2 = nn.Linear(512, 512)
-        self.out = nn.Linear(512, 10)
-
-    def forward(self, x):
-        # TODO connect layers
-        x = F.relu(self.fc1(x), inplace=True)
-        x = F.relu(self.fc2(x), inplace=True)
-        x = F.softmax(self.out(x))
-        return x
 
 
-# TODO train with SGD with momentum param 0.9
+def test():
+    # set evaluation mode
+    model.eval()
 
-net = Net()
+    test_loss = 0
+    correct = 0
 
-THRESHOLD = 0.05
+    for data, target in test_loader:
+        if args.cuda:
+            data, target = data.cuda(), target.cuda()
+        data, target = Variable(data, volatile=True), Variable(target)
+        output = model(data)
+
+        test_loss += F.nll_loss(output, target, size_average=False).data[0]  # sum up batch loss
+        pred = output.data.max(1, keepdim=True)[1]  # get the index of the max log-probability
+        correct += pred.eq(target.data.view_as(pred)).cpu().sum()
+
+    test_loss /= len(test_loader.dataset)
+    print(
+        '\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
+            test_loss, correct, len(test_loader.dataset), 100. * correct / len(test_loader.dataset)
+        )
+    )
 
 
-def compress(f: Net):
+# # loop: training, compression
+# for cycle in range(CYCLES):
+#     for epoch in range(1, args.epochs + 1):
+#         train(epoch)
+#         test()
+#     compress(model)
 
-    # mask weights and biases
-    for l in f.parameters():
-        mask = (torch.abs(l.data) > THRESHOLD).float()
-        l.data.mul_(mask)
-
-
-# TODO compress after training
-compress(net)
-
-# TODO loop: training, compression
+# TODO mark compression clearly
+# loop: training, compression
+for epoch in range(1, args.epochs + 1):
+    train(epoch)
+    print(72 * '-')
+    test()
+    compress(model)
+    test()
 
 # TODO drop rows before and after layer you want to prune
+# TODO corrupt input and test it out
 
-# TODO add training on dataset and make network take corresponding input/output dimensions
-
-for l in net.children():
-    print(l.weight)
+if __name__ == '__main__':
+    plt.ioff()
