@@ -5,6 +5,8 @@ import copy
 import torch.nn.functional as F
 from torch import nn
 
+from cli_options import args
+
 
 class Net(nn.Module):
     def __init__(self):
@@ -26,6 +28,10 @@ class Net(nn.Module):
 # Use deepcopy to ensure they start exactly the same
 real_model = Net()
 fake_model = copy.deepcopy(real_model)
+
+if args.cuda:
+    real_model = real_model.cuda()
+    fake_model = fake_model.cuda()
 
 if __name__ == '__main__':
     pass
