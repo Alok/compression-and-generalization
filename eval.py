@@ -14,7 +14,7 @@ def eval(f, real=True) -> List[float]:
 
     losses = []  # losses for each batch
     f.eval()  # put the model in evaluation (test) mode
-    criterion = nn.CrossEntropyLoss()
+    criterion = nn.NLLLoss()
     loader = real_test_loader if real else fake_test_loader
 
     for i, (x, y) in enumerate(loader):

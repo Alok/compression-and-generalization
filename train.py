@@ -16,7 +16,7 @@ def train(f, *, epochs=3, real=True) -> List[float]:
     losses = []
 
     f.train()  # put the model in training mode
-    criterion = nn.CrossEntropyLoss()
+    criterion = nn.NLLLoss()
     loader = real_train_loader if real else fake_train_loader
 
     optimizer = optim.SGD(f.parameters(), lr=args.lr, momentum=args.momentum)
