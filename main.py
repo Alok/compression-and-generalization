@@ -13,6 +13,7 @@ from train import train
 ITERS = 5
 REAL_EPOCHS = 10
 FAKE_EPOCHS = 1 * REAL_EPOCHS
+STEP_SIZE = 500
 
 # Set seed
 torch.manual_seed(args.seed)
@@ -32,6 +33,7 @@ for iter in range(ITERS):
 
     # Plot performance
     plt = plot(real_losses, fake_losses)
+    plt = plot(real=real_losses[::STEP_SIZE], fake=fake_losses[::STEP_SIZE])
     plt.savefig(('figs/%s.png' % iter))
     plt.gcf().clear()
 
