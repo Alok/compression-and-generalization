@@ -30,7 +30,7 @@ def create_loader(data: np.ndarray, labels: np.ndarray, shuffle: bool = True) ->
         TensorDataset(torch.from_numpy(data), torch.from_numpy(labels)),
         batch_size=args.batch_size,
         shuffle=shuffle,
-        pin_memory=False,
+        pin_memory=args.cuda,
     )
 
 
