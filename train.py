@@ -1,28 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import argparse
-import logging
-import os
-import random
-import re
-import shutil
-import subprocess
-import sys
-from logging import debug, info, log
-from pathlib import Path
+from typing import List
 
 import torch.nn as nn
-import torch.nn.functional as F
-import torch.nn.init as init
 import torch.optim as optim
-import torchvision.datasets as dset
-import torchvision.transforms as transforms
 from data import fake_train_loader, real_train_loader
-from pudb import set_trace
 from torch.autograd import Variable as V
-from torch.nn import Parameter as P
-from torch.utils.data import DataLoader
 
 from cli_options import args
 
