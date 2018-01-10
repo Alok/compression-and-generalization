@@ -8,7 +8,7 @@ from torch import nn
 
 class Net(nn.Module):
     def __init__(self):
-        super().__init__()
+        super(Net, self).__init__()
         self.fc1 = nn.Linear(28**2, 512)
         self.fc2 = nn.Linear(512, 512)
         self.fc3 = nn.Linear(512, 512)

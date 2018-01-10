@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from typing import List
-
 import torch.nn as nn
 import torch.optim as optim
-from data import fake_train_loader, real_train_loader
 from torch.autograd import Variable as V
 
 from cli_options import args
+from data import fake_train_loader, real_train_loader
 
 
-def train(f, *, epochs=3, real=True) -> List[float]:
+def train(f, epochs=3, real=True):
 
     losses = []
 
