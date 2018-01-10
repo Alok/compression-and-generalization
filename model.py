@@ -2,17 +2,18 @@
 # -*- coding: utf-8 -*-
 import copy
 
+import torch.nn.functional as F
+from torch import nn
+
 
 class Net(nn.Module):
     def __init__(self):
         super().__init__()
-        # TODO layers
         self.fc1 = nn.Linear(28**2, 512)
         self.fc2 = nn.Linear(512, 512)
         self.out = nn.Linear(512, 10)
 
     def forward(self, x):
-        # TODO connect layers
         x = x.view(-1, 784)
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
