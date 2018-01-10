@@ -26,6 +26,10 @@ def plot(real, fake):
 
     # TODO no axes marks
     # TODO no legend
+    # plt.scatter(xs, real, color='g')
+    # plt.scatter(xs, fake, color='r')
+    plt.plot(xs,real,color='g')
+    plt.plot(xs,fake,color='r')
 
     return plt
 
