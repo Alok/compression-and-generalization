@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import copy
 
 
 class Net(nn.Module):
@@ -18,6 +19,10 @@ class Net(nn.Module):
         x = F.log_softmax(self.out(x))
         return x
 
+
+# Use deepcopy to ensure they start exactly the same
+real_model = Net()
+fake_model = copy.deepcopy(real_model)
 
 if __name__ == '__main__':
     pass
