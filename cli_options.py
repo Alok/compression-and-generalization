@@ -1,4 +1,9 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import argparse
+
+import torch
 
 # Training settings
 parser = argparse.ArgumentParser(description='PyTorch MNIST')
@@ -63,3 +68,7 @@ parser.add_argument(
 )
 
 args = parser.parse_args()
+args.cuda = not args.no_cuda and torch.cuda.is_available()
+
+if __name__ == '__main__':
+    pass
