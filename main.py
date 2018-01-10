@@ -11,8 +11,9 @@ from plot import plot
 from train import train
 
 ITERS = 5
-REAL_EPOCHS = 10
-FAKE_EPOCHS = 1 * REAL_EPOCHS
+REAL_EPOCHS = args.epochs
+FAKE_EPOCHS = 5 * REAL_EPOCHS
+
 STEP_SIZE = 500
 
 # Set seed
