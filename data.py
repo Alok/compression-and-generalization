@@ -18,14 +18,14 @@ transform = transforms.Compose([
 ])
 
 real_dataset = MNIST(
-    root='./data',
+    root='data/',
     train=True,
     download=True,
     transform=transform,
 )
 
 fake_dataset = MNIST(
-    root='./data',
+    root='data/',
     train=True,
     download=True,
     transform=transform,

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import better_exceptions
 import matplotlib.pyplot as plt
 import torch
 
@@ -28,14 +27,12 @@ kwargs = {'num_workers': 1, 'pin_memory': True} if args.cuda else {}
 for iter in range(ITERS):
 
     # Train
-    # real_losses = train(real_model, real=True)
-    # fake_losses = train(fake_model, real=False)
     real_losses = train(real_model, real=True, epochs=REAL_EPOCHS)
     fake_losses = train(fake_model, real=False, epochs=FAKE_EPOCHS)
 
     # Plot performance
     plt = plot(real_losses, fake_losses)
-    plt.savefig(f'./figs/{iter}.png')
+    plt.savefig(f'figs/{iter}.png')
     plt.gcf().clear()
 
     # Compress and repeat
