@@ -32,7 +32,7 @@ for iter in range(ITERS):
 
     # Plot performance
     plt = plot(real_losses, fake_losses)
-    plt.savefig(f'figs/{iter}.png')
+    plt.savefig(('figs/%s.png' % iter))
     plt.gcf().clear()
 
     # # Compress and repeat
