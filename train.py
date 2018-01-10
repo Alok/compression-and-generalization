@@ -33,5 +33,5 @@ def train(f, epochs=3, real=True):
             loss.backward()
             optimizer.step()
 
-        losses.append(float(loss.data[0]))  # extract number for singleton tensor
+            losses.append(float(loss.data[0]))  # extract number for singleton tensor
     return losses

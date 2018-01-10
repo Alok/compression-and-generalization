@@ -13,9 +13,9 @@ from train import train
 
 ITERS = 5
 REAL_EPOCHS = args.epochs
-FAKE_EPOCHS = 5 * REAL_EPOCHS
+FAKE_EPOCHS = 10 * REAL_EPOCHS
 
-STEP_SIZE = 500
+STEP_SIZE = 50
 
 # Set seed
 torch.manual_seed(args.seed)
@@ -35,7 +35,6 @@ for iter in range(1, ITERS + 1):
 
     # Plot performance
     plt = plot(
-        np.arange(len(real_losses)),
         real=real_losses,
         fake=fake_losses,
     )
