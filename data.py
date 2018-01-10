@@ -38,11 +38,14 @@ def create_loader(data: np.ndarray, labels: np.ndarray, shuffle: bool = True) ->
 # Returns: data loaders
 
 real_train_loader = create_loader(x_train, y_train)
-real_test_loader = create_loader(x_test, y_test)
+# random labels
+fake_train_loader = create_loader(x_train, np.random.permutation(y_train))
+# random (0,1) noise for data
+# fake_train_loader = create_loader( np.random.random_sample(x_train.shape).astype(np.float32), y_train)
 
-# random (0,1) noise
-fake_train_loader = create_loader(np.random.random_sample(x_train.shape), y_train)
-fake_test_loader = create_loader(np.random.random_sample(x_test.shape), y_test)
+
+real_test_loader = create_loader(x_test, y_test)
+fake_test_loader = create_loader(np.random.random_sample(x_test.shape).astype(np.float32), y_test)
 
 # TODO rm the use of keras and just directly modify the pytorch mnist dataloader
 # TODO try on cifar and imagenet
