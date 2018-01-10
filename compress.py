@@ -5,8 +5,9 @@ import copy
 
 import torch
 
+# TODO try pruning instead of masking. Drop rows before and after layer you want to prune.
 
-# TODO return copy of model
+
 def compress(f, THRESHOLD=0.05):
 
     # TODO return copy of model rather than modifying in-place
