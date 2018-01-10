@@ -4,13 +4,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def plot(real, fake):
-
-    xs = np.arange(len(real))
+def plot(real=None, fake=None):
 
     # green for real, red for fake
-    plt.plot(xs, real, color='g')
-    plt.plot(xs, fake, color='r')
+    if real is not None:
+        plt.plot(np.arange(len(fake)), real, color='g')
+    if fake is not None:
+        plt.plot(np.arange(len(fake)), fake, color='r')
 
     return plt
 
