@@ -8,14 +8,16 @@ import torch
 # TODO try pruning instead of masking. Drop rows before and after layer you want to prune.
 
 
-def compress(f, THRESHOLD=0.05):
+def mask_compress(f, THRESHOLD=0.05):
 
-    # TODO return copy of model rather than modifying in-place
-    # f = copy.deepcopy(f)
+    # Faster than `deepcopy` and we only need the weights
+    g = Net()
+    g.load_state_dict(f.state_dict())
 
-    # mask weights and biases
-    for l in f.parameters():
-        # 1 if larger, 0 otherwise
+    g = torch.nn.DataParallel(g.cuda()) if args.cuda else g
+    # Mask weights/biases
+    for l in g.parameters():
+        # 1 if larger than `THRESHOLD`, 0 otherwise
         mask = (torch.abs(l.data) > THRESHOLD).float()
         l.data.mul_(mask)
 
@@ -23,4 +25,4 @@ def compress(f, THRESHOLD=0.05):
 
 
 if __name__ == '__main__':
-    pass
+    h = mask_compress(Net())
