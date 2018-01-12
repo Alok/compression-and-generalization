@@ -59,6 +59,10 @@ for i in range(ITERS):
         fake=fake_losses,
     )
 
+    # save models
+    torch.save(real, 'real-%s.pt' % i)
+    torch.save(fake, 'fake-%s.pt' % i)
+
     # # Compress and repeat
     real = compress.datagen_compress(real)
     fake = compress.datagen_compress(fake)
