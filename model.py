@@ -28,8 +28,8 @@ real_model = Net()
 fake_model = copy.deepcopy(real_model)
 
 if args.cuda:
-    real_model = real_model.cuda()
-    fake_model = fake_model.cuda()
+    real_model = nn.DataParallel(real_model.cuda())
+    fake_model = nn.DataParallel(fake_model.cuda())
 
 if __name__ == '__main__':
     pass
