@@ -6,16 +6,14 @@ import torch.optim as optim
 from torch.autograd import Variable as V
 
 from cli_options import args
-from data import fake_train_loader, real_train_loader
 
 
-def train(f, epochs=3, real=True):
+def train(f, loader, epochs=3):
 
     losses = []
 
     f.train()  # put the model in training mode
     criterion = nn.NLLLoss()
-    loader = real_train_loader if real else fake_train_loader
 
     optimizer = optim.SGD(f.parameters(), lr=args.lr, momentum=args.momentum)
 
