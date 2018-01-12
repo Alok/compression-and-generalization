@@ -1,16 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
 import matplotlib.pyplot as plt
-import numpy as np
 
 
-def plot(real=None, fake=None):
+def plot(iteration, real=None, fake=None):
 
     # green for real, red for fake
     if real is not None:
-        plt.plot(np.arange(len(real)), real, color='g')
+        plt.plot(range(len(real)), real, color='g')
     if fake is not None:
-        plt.plot(np.arange(len(fake)), fake, color='r')
+        plt.plot(range(len(fake)), fake, color='r')
+
+    plt.title('Iteration: %s' % iteration)
+    plt.ylabel('Loss')
+    plt.xlabel('Minibatch')
+
+    plt.savefig(('figs/%s.png' % iteration))
+    plt.gcf().clear()
 
     return plt
 

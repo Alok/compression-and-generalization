@@ -54,14 +54,10 @@ for i in range(ITERS):
 
     # Plot performance
     plt = plot(
+        iteration=i,
         real=real_losses,
         fake=fake_losses,
     )
-    plt.title('Iteration: %s' % iter)
-    plt.ylabel('Loss')
-    plt.xlabel('Minibatch')
-    plt.savefig(('figs/%s.png' % iter))
-    plt.gcf().clear()
 
     # # Compress and repeat
     real = compress.datagen_compress(real)
