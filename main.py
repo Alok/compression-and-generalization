@@ -2,31 +2,32 @@
 # -*- coding: utf-8 -*-
 
 import matplotlib.pyplot as plt
-import numpy as np
 import torch
 
+import compress
 from cli_options import args
-from compress import compress
 from data import DataLoader, GenDataset, fake_loader, real_loader
 from model import fake_model, real_model
 from plot import plot
 from train import train
 
-ITERS = 5
-REAL_EPOCHS = args.epochs
-FAKE_EPOCHS = 10 * REAL_EPOCHS
+# Don't plot interactively
+plt.ioff()
 
-STEP_SIZE = 50
+ITERS = 10
+REAL_EPOCHS = args.epochs
+FAKE_EPOCHS = 1 * REAL_EPOCHS
 
 # Set seed
 torch.manual_seed(args.seed)
 if args.cuda:
     torch.cuda.manual_seed(args.seed)
 
-# Don't plot interactively
-plt.ioff()
+if args.cuda:
+    kwargs = {'batch_size': args.batch_size, 'shuffle': True, 'num_workers': 0, 'pin_memory': False}
+else:
+    kwargs = {}
 
-kwargs = {'num_workers': 1, 'pin_memory': True} if args.cuda else {}
 # The first model to be trained is the uncompressed version.
 real = real_model
 fake = fake_model
@@ -63,5 +64,5 @@ for i in range(ITERS):
     plt.gcf().clear()
 
     # # Compress and repeat
-    compress(real_model)
-    compress(fake_model)
+    real = compress.datagen_compress(real)
+    fake = compress.datagen_compress(fake)

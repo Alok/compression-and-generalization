@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from random import randint
-
 import torch
-from torch.utils.data import DataLoader
+from numpy import prod
+from torch.autograd import Variable
+from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
 from torchvision.datasets import MNIST
 
@@ -24,6 +24,9 @@ real_dataset = MNIST(
     transform=transform,
 )
 
+num_samples = int(real_dataset.train_data.size()[0])
+input_dim = int(prod(real_dataset.train_data.size()[1:]))
+
 fake_dataset = MNIST(
     root='data/',
     train=True,
@@ -34,17 +37,36 @@ fake_dataset = MNIST(
 fake_dataset.train_labels.random_(0, to=NUM_CLASSES)  # randomize labels
 
 # TODO try on CIFAR and ImageNet
-real_train_loader = DataLoader(
+real_loader = DataLoader(
     real_dataset,
     batch_size=args.batch_size,
     shuffle=True,
 )
 
-fake_train_loader = DataLoader(
+fake_loader = DataLoader(
     fake_dataset,
     batch_size=args.batch_size,
     shuffle=True,
 )
 
+
+class GenDataset(Dataset):
+    def __init__(self, f):
+        # need Variable for calling net to work,
+        self.data_tensor = Variable(torch.Tensor(num_samples, input_dim).uniform_(0, 1))
+        self.target_tensor = torch.max(f(self.data_tensor).data, 1)[1]  # argmax
+
+        # But can only index into Tensors, not Variables
+        self.data_tensor = self.data_tensor.data
+
+    def __getitem__(self, index):
+        return self.data_tensor[index], self.target_tensor[index]
+
+    def __len__(self):
+        return len(self.data_tensor)
+
+
 if __name__ == '__main__':
-    pass
+    from model import Net
+    f = Net()
+    t = GenDataset(f)
