@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from math import ceil
+
 import torch
 from torch.utils.data import DataLoader
 
@@ -38,7 +40,7 @@ def datagen_compress(f):
     # Init smaller network that uses 20% fewer nodes in the hidden layers
 
     hidden_dim = f.module.hidden_dim if args.cuda else f.hidden_dim
-    g = Net(hidden_dim=int(hidden_dim * 0.8))
+    g = Net(hidden_dim=int(ceil(hidden_dim * 0.8)))
 
     g = torch.nn.DataParallel(g.cuda()) if args.cuda else g
 
