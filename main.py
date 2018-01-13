@@ -14,7 +14,6 @@ from train import train
 # Don't plot interactively
 plt.ioff()
 
-ITERS = 10
 REAL_EPOCHS = args.epochs
 FAKE_EPOCHS = 1 * REAL_EPOCHS
 
@@ -32,7 +31,7 @@ else:
 real = real_model
 fake = fake_model
 
-for i in range(ITERS):
+for i in range(args.iters):
 
     # generate training data for compressed models (except when training the real model)
     if i != 0:

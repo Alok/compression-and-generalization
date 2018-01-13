@@ -56,6 +56,14 @@ parser.add_argument(
     help='random seed (default: 1)',
 )
 
+parser.add_argument(
+    '--iters',
+    '-i',
+    type=int,
+    default=10,
+)
+
+
 args = parser.parse_args()
 args.cuda = not args.no_cuda and torch.cuda.is_available()
 
