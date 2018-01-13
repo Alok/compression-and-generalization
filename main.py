@@ -32,24 +32,39 @@ real = real_model
 fake = fake_model
 
 for i in range(args.iters):
+    print(real, fake)
 
     # generate training data for compressed models (except when training the real model)
     if i != 0:
         real_loader = DataLoader(GenDataset(real_model), **kwargs)
         fake_loader = DataLoader(GenDataset(fake_model), **kwargs)
 
-    # Train
-    real_losses = train(
-        real,
-        loader=real_loader,
-        epochs=REAL_EPOCHS,
-    )
+    if i == 0:
+        # Train
+        real_losses = train(
+            real_model,
+            loader=real_loader,
+            epochs=REAL_EPOCHS,
+        )
 
-    fake_losses = train(
-        fake,
-        loader=fake_loader,
-        epochs=FAKE_EPOCHS,
-    )
+        fake_losses = train(
+            fake_model,
+            loader=fake_loader,
+            epochs=FAKE_EPOCHS,
+        )
+    else:
+        # Train
+        real_losses = train(
+            real,
+            loader=real_loader,
+            epochs=REAL_EPOCHS,
+        )
+
+        fake_losses = train(
+            fake,
+            loader=fake_loader,
+            epochs=FAKE_EPOCHS,
+        )
 
     # Plot performance
     plt = plot(
