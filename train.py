@@ -3,7 +3,7 @@
 
 import torch.nn as nn
 import torch.optim as optim
-from torch.autograd import Variable as V
+from torch.autograd import Variable
 
 from cli_options import args
 
@@ -22,7 +22,7 @@ def train(f, loader, epochs=3):
 
             if args.cuda:
                 x, y = x.cuda(), y.cuda()
-            x, y = V(x), V(y)
+            x, y = Variable(x), Variable(y)
 
             out = f(x)
 

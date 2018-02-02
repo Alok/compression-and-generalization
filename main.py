@@ -23,7 +23,12 @@ if args.cuda:
     torch.cuda.manual_seed(args.seed)
 
 if args.cuda:
-    kwargs = {'batch_size': args.batch_size, 'shuffle': True, 'num_workers': 0, 'pin_memory': False}
+    kwargs = {
+        'batch_size': args.batch_size,
+        'shuffle': True,
+        'num_workers': 0,
+        'pin_memory': False,
+    }
 else:
     kwargs = {}
 
@@ -77,6 +82,6 @@ for i in range(args.iters):
     torch.save(real, 'real-%s.pt' % i)
     torch.save(fake, 'fake-%s.pt' % i)
 
-    # # Compress and repeat
+    # Compress and repeat
     real = compress.datagen_compress(real)
     fake = compress.datagen_compress(fake)

@@ -37,7 +37,7 @@ def mask_compress(f, THRESHOLD=0.05):
 
 
 def datagen_compress(f):
-    # Init smaller network that uses 20% fewer nodes in the hidden layers
+    # Initialize smaller network that uses 20% fewer nodes in the hidden layers
 
     hidden_dim = f.module.hidden_dim if args.cuda else f.hidden_dim
     g = Net(hidden_dim=int(ceil(hidden_dim * 0.8)))
