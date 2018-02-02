@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+try:
+    import matplotlib
+    matplotlib.use('agg')
+except:
+    import sys
+    sys.exit("Couldn't load mpl")
+
 import matplotlib.pyplot as plt
 import torch
-from data import DataLoader, GenDataset, fake_loader, real_loader
 
 import compress
 from cli_options import args
+from data import DataLoader, GenDataset, fake_loader, real_loader
 from model import fake_model, real_model
 from plot import plot
 from train import train
