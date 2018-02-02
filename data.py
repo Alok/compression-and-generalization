@@ -54,7 +54,7 @@ class GenDataset(Dataset):
     def __init__(self, f):
         # need Variable for calling net to work,
         self.data_tensor = Variable(torch.Tensor(num_samples, input_dim).uniform_(0, 1))
-        self.target_tensor = torch.max(f(self.data_tensor).data, 1)[1]  # argmax
+        self.target_tensor = f(self.data_tensor).max(1).data[1]  # argmax
 
         # But can only index into Tensors, not Variables
         self.data_tensor = self.data_tensor.data
