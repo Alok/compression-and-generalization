@@ -12,11 +12,11 @@ def plot(iteration, real=None, fake=None):
     if fake is not None:
         plt.plot(range(len(fake)), fake, color='r')
 
-    plt.title('Iteration: %s' % iteration)
+    plt.title(f'Iteration: {iteration}')
     plt.ylabel('Loss')
     plt.xlabel('Minibatch')
 
-    plt.savefig(('figs/%s.png' % iteration))
+    plt.savefig((f'figs/{iteration}.png'))
     plt.gcf().clear()
 
     return plt

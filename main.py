@@ -79,8 +79,8 @@ for i in range(args.iters):
     )
 
     # save models
-    torch.save(real, 'real-%s.pt' % i)
-    torch.save(fake, 'fake-%s.pt' % i)
+    torch.save(real, f'real-{i}.pt')
+    torch.save(fake, f'fake-{i}.pt')
 
     # Compress and repeat
     real = compress.datagen_compress(real)

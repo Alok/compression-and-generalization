@@ -16,7 +16,7 @@ def flatten(t):
 class Net(nn.Module):
     def __init__(self, hidden_dim=512):
         H = self.hidden_dim = hidden_dim
-        super(Net, self).__init__()
+        super().__init__()
         self.fc1 = nn.Linear(input_dim, H)
         self.fc2 = nn.Linear(H, H)
         self.out = nn.Linear(H, NUM_CLASSES)
