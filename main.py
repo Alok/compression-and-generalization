@@ -36,13 +36,12 @@ else:
 real = real_model
 fake = fake_model
 
+# Generate training data for compressed models.
+real_gen_loader = DataLoader(GenDataset(real_model), **kwargs)
+fake_gen_loader = DataLoader(GenDataset(fake_model), **kwargs)
+
 for i in range(args.iters):
     print(real, fake)
-
-    # generate training data for compressed models (except when training the real model)
-    if i != 0:
-        real_loader = DataLoader(GenDataset(real_model), **kwargs)
-        fake_loader = DataLoader(GenDataset(fake_model), **kwargs)
 
     if i == 0:
         # Train
@@ -61,13 +60,13 @@ for i in range(args.iters):
         # Train
         real_losses = train(
             real,
-            loader=real_loader,
+            loader=real_gen_loader,
             epochs=REAL_EPOCHS,
         )
 
         fake_losses = train(
             fake,
-            loader=fake_loader,
+            loader=fake_gen_loader,
             epochs=FAKE_EPOCHS,
         )
 
