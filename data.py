@@ -54,7 +54,7 @@ class GenDataset(Dataset):
     def __init__(self, f):
         # Use (0,1) uniform data since images are normalized to be in that range anyway.
         self.data_tensor = torch.Tensor(num_samples, input_dim).uniform_(0, 1)
-        self.target_tensor = f(Variable(self.data_tensor)).max(1).data[1]  # argmax
+        self.target_tensor = f(Variable(self.data_tensor)).data.max(1)[1]  # argmax
 
     def __getitem__(self, index):
         return self.data_tensor[index], self.target_tensor[index]
