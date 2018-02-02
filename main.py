@@ -3,10 +3,10 @@
 
 import matplotlib.pyplot as plt
 import torch
+from data import DataLoader, GenDataset, fake_loader, real_loader
 
 import compress
 from cli_options import args
-from data import DataLoader, GenDataset, fake_loader, real_loader
 from model import fake_model, real_model
 from plot import plot
 from train import train
@@ -36,10 +36,6 @@ else:
 real = real_model
 fake = fake_model
 
-# Generate training data for compressed models.
-real_gen_loader = DataLoader(GenDataset(real_model), **kwargs)
-fake_gen_loader = DataLoader(GenDataset(fake_model), **kwargs)
-
 for i in range(args.iters):
     print(real, fake)
 
@@ -56,6 +52,11 @@ for i in range(args.iters):
             loader=fake_loader,
             epochs=FAKE_EPOCHS,
         )
+
+        # Generate training data for compressed models *after* training originals.
+        real_gen_loader = DataLoader(GenDataset(real_model), **kwargs)
+        fake_gen_loader = DataLoader(GenDataset(fake_model), **kwargs)
+
     else:
         # Train
         real_losses = train(
