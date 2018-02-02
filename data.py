@@ -52,12 +52,9 @@ fake_loader = DataLoader(
 
 class GenDataset(Dataset):
     def __init__(self, f):
-        # need Variable for calling net to work,
-        self.data_tensor = Variable(torch.Tensor(num_samples, input_dim).uniform_(0, 1))
-        self.target_tensor = f(self.data_tensor).max(1).data[1]  # argmax
-
-        # But can only index into Tensors, not Variables
-        self.data_tensor = self.data_tensor.data
+        # Use (0,1) uniform data since images are normalized to be in that range anyway.
+        self.data_tensor = torch.Tensor(num_samples, input_dim).uniform_(0, 1)
+        self.target_tensor = f(Variable(self.data_tensor)).max(1).data[1]  # argmax
 
     def __getitem__(self, index):
         return self.data_tensor[index], self.target_tensor[index]
@@ -67,6 +64,4 @@ class GenDataset(Dataset):
 
 
 if __name__ == '__main__':
-    from model import Net
-    f = Net()
-    t = GenDataset(f)
+    pass
