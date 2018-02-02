@@ -12,8 +12,8 @@ def train(f, loader, epochs=3):
 
     losses = []
 
-    f.train()  # put the model in training mode
-    criterion = nn.NLLLoss()
+    f.train()  # Put the model in training mode.
+    criterion = nn.CrossEntropyLoss()
 
     optimizer = optim.SGD(f.parameters(), lr=args.lr, momentum=args.momentum)
 

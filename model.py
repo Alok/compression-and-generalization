@@ -25,7 +25,7 @@ class Net(nn.Module):
         x = flatten(x)
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
-        x = F.log_softmax(self.out(x))
+        x = F.softmax(self.out(x))
         return x
 
 
